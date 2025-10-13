@@ -1,0 +1,17 @@
+Iris-IDEAS-TIH/
+│
+├── build/
+├── Iris/
+│   ├── pages/
+│   │   ├── 1_Overview.py
+│   │   ├── 2_Basic_EDA.py
+│   │   ├── 3_Classification.py
+│   │   ├── 4_SQL_Playground.py
+│   ├── Home.py
+│   ├── run_app.py
+│   ├── __init__.py
+│   ├── logo.ico
+│   ├── logo.jpeg
+│   └── packages.txt
+│
+└── installer.cfg

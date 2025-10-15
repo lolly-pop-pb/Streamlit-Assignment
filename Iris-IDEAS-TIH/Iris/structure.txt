@@ -11,7 +11,7 @@ Iris-IDEAS-TIH/
 │   ├── run_app.py
 │   ├── __init__.py
 │   ├── logo.ico
-│   ├── logo.jpeg
+│   ├── logo.jpg
 │   └── packages.txt
 │
 └── installer.cfg

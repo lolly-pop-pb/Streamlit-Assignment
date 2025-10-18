@@ -4,26 +4,22 @@ import sys
 import time
 import webbrowser
 
-
 def main():
-
     # Getting path to python executable (full path of deployed python on Windows)
     executable = sys.executable
+    path_to_main = os.path.join(os.path.dirname(__file__), "home.py")
 
-    path_to_main = os.path.join(os.path.dirname(__file__), "Home.py")
-
-    # Running streamlit server in a subprocess and writing to log file
+    # Running streamlit server in a subprocess
     proc = Popen(
         [
             executable,
-            "-m",
-            "streamlit",
-            "run",
-            path_to_main,
-            # The following option appears to be necessary to correctly start the streamlit server,
-            # but it should start without it. More investigations should be carried out.
+            "-m", "streamlit", "run", path_to_main,
             "--server.headless=true",
             "--global.developmentMode=false",
+            "--server.port=8501",
+            "--server.address=127.0.0.1",
+            "--server.enableCORS=false",
+            "--server.enableXsrfProtection=false",
         ],
         stdin=PIPE,
         stdout=PIPE,
@@ -32,19 +28,18 @@ def main():
     )
     proc.stdin.close()
 
-    # Force the opening (does not open automatically) of the browser tab after a brief delay to let
-    # the streamlit server start.
+    # Wait a few seconds for the Streamlit server to start
     time.sleep(3)
-    webbrowser.open("http://localhost:8501")
+    webbrowser.open("http://127.0.0.1:8501")
 
+    # Print Streamlit logs in real-time
     while True:
-        s = proc.stdout.read()
+        s = proc.stdout.readline()
         if not s:
             break
         print(s, end="")
 
     proc.wait()
-
 
 if __name__ == "__main__":
     main()

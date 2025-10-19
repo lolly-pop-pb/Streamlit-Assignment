@@ -2,8 +2,6 @@
 
 ### Interactive Data Exploration and Analysis Suite
 
----
-
 ## Overview
 
 **Iris IDEAS-TIH** is an interactive web application built with **Streamlit** for exploring, analyzing, and modeling the classic **Iris dataset**.  
@@ -88,8 +86,8 @@ pip install -r packages.txt
 3. **Run the application**
 ```bash
 python run_app.py
-The app will automatically open in your browser at:
 ```
+The app will automatically open in your browser at:
 http://127.0.0.1:8501
 
 Building the Executable (.exe)

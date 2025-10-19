@@ -1,7 +1,0 @@
-streamlit
-pandas
-seaborn
-matplotlib
-scikit-learn
-st-aggrid
-duckdb

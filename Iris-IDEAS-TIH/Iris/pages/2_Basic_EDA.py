@@ -30,7 +30,7 @@ st.pyplot(fig)
 
 features = iris.feature_names
 st.subheader("Feature Histograms")
-fig, axes = plt.subplots(2, 2, figsize=(10, 6))
+fig, axes = plt.subplots(2, 2, figsize=(6, 4))
 for i, feature in enumerate(features):
     row, col = divmod(i, 2)
     sns.histplot(df[feature], kde=True, color='teal', ax=axes[row, col])

@@ -7,26 +7,42 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+import numpy as np
 
-st.title("🤖 Classification Models")
+@st.cache_data
+def load_iris_data():
+    iris = load_iris()
+    df = pd.DataFrame(iris.data, columns=iris.feature_names)
+    df['target'] = iris.target
+    df['species'] = df['target'].apply(lambda x: iris.target_names[x])
+    return df, iris.target_names
 
-iris = load_iris()
-df = pd.DataFrame(iris.data, columns=iris.feature_names)
-df['target'] = iris.target
-target_names = iris.target_names
+@st.cache_resource
+def train_logistic_regression(X_train, y_train):
+    model = LogisticRegression(max_iter=200)
+    model.fit(X_train, y_train)
+    return model
 
-X = df.drop(columns=['target'])
+@st.cache_resource
+def train_random_forest(X_train, y_train):
+    model = RandomForestClassifier(n_estimators=100, random_state=42)
+    model.fit(X_train, y_train)
+    return model
+
+df, target_names = load_iris_data()
+
+X = df.drop(columns=['target', 'species'])
 y = df['target']
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-col1, col2 = st.columns(2)
+st.title("🤖 Classification Models")
 
-# Logistic Regression
-with col1:
-    st.subheader("📈 Logistic Regression")
-    if st.button("Run Logistic Regression"):
-        log_reg = LogisticRegression(max_iter=200)
-        log_reg.fit(X_train, y_train)
+model_choice = st.radio("Select a model:", ["Logistic Regression", "Random Forest"])
+
+if st.button("Run Model"):
+    if model_choice == "Logistic Regression":
+        st.subheader("📈 Logistic Regression")
+        log_reg = train_logistic_regression(X_train, y_train)
         y_pred = log_reg.predict(X_test)
 
         acc = accuracy_score(y_test, y_pred)
@@ -42,12 +58,16 @@ with col1:
         st.dataframe(pd.DataFrame(classification_report(
             y_test, y_pred, target_names=target_names, output_dict=True)).transpose())
 
-# Random Forest Classifier
-with col2:
-    st.subheader("🌲 Random Forest Classifier")
-    if st.button("Run Random Forest Classifier"):
-        rf = RandomForestClassifier(n_estimators=100, random_state=42)
-        rf.fit(X_train, y_train)
+        with st.expander("Show model details"):
+            st.write("Model Parameters:", log_reg.get_params())
+            st.write("Sample Predictions:", pd.DataFrame({
+                "Actual": y_test[:5].values,
+                "Predicted": y_pred[:5]
+            }))
+
+    elif model_choice == "Random Forest":
+        st.subheader("🌲 Random Forest Classifier")
+        rf = train_random_forest(X_train, y_train)
         y_pred = rf.predict(X_test)
 
         acc = accuracy_score(y_test, y_pred)
@@ -62,3 +82,19 @@ with col2:
         st.subheader("Classification Report")
         st.dataframe(pd.DataFrame(classification_report(
             y_test, y_pred, target_names=target_names, output_dict=True)).transpose())
+
+        # Feature Importance Plot
+        st.subheader("Feature Importance Plot")
+        importances = rf.feature_importances_
+        sorted_idx = np.argsort(importances)
+        fig, ax = plt.subplots()
+        ax.barh(np.array(X.columns)[sorted_idx], importances[sorted_idx])
+        ax.set_title("Feature Importance (Random Forest)")
+        st.pyplot(fig)
+
+        with st.expander("Show model details"):
+            st.write("Model Parameters:", rf.get_params())
+            st.write("Sample Predictions:", pd.DataFrame({
+                "Actual": y_test[:5].values,
+                "Predicted": y_pred[:5]
+            }))

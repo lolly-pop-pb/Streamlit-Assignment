@@ -4,9 +4,15 @@ from sklearn.datasets import load_iris
 
 st.title("📘 Iris Dataset Overview")
 
-iris = load_iris()
-df = pd.DataFrame(iris.data, columns=iris.feature_names)
-df['target'] = iris.target
+@st.cache_data
+def load_iris_data():
+    iris = load_iris()
+    df = pd.DataFrame(iris.data, columns=iris.feature_names)
+    df['target'] = iris.target
+    df['species'] = df['target'].apply(lambda x: iris.target_names[x])
+    return df, iris.target_names
+
+df, target_names = load_iris_data()
 
 st.markdown("""
 ### 🌼 About the Dataset

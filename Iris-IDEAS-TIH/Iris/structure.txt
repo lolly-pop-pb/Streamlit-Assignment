@@ -13,5 +13,8 @@ Iris-IDEAS-TIH/
 │   ├── logo.ico
 │   ├── logo.jpg
 │   └── packages.txt
+│   └── pdf_export.py
+│   └── exports/
 │
 └── installer.cfg
+└── README.txt  

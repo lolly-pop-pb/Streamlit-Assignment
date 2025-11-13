@@ -4,6 +4,10 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.datasets import load_iris
 
+# Inject custom CSS
+with open("styles.css") as f:
+    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+    
 st.title("📊 Exploratory Data Analysis")
 st.markdown("Here we explore the distribution and relationships among the Iris dataset features.")
 

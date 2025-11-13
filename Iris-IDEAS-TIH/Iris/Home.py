@@ -6,6 +6,11 @@ st.set_page_config(
     page_icon="🌸"
 )
 
+# Inject custom CSS
+with open("styles.css") as f:
+    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+
+
 st.title("🌸 Welcome to the Iris Dataset Explorer")
 
 st.markdown("""

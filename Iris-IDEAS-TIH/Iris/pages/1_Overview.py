@@ -3,7 +3,10 @@ import pandas as pd
 from sklearn.datasets import load_iris
 import pdf_export
 st.title("📘 Iris Dataset Overview")
-
+# Inject custom CSS
+with open("styles.css") as f:
+    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+    
 @st.cache_data
 def load_iris_data():
     iris = load_iris()

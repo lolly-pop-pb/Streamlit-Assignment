@@ -1,0 +1,4 @@
+/* Hide Streamlit deploy button and top-right menu */
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+header {visibility: hidden;}
